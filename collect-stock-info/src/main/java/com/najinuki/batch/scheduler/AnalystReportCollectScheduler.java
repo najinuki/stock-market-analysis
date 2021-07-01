@@ -34,7 +34,7 @@ public class AnalystReportCollectScheduler {
     @Value("${pdf.download.path}")
     private String pdfDownloadPath;
 
-    @Scheduled(fixedDelay = 10000)
+    //@Scheduled(fixedDelay = 10000)
     public void start() {
         try {
             System.setProperty("webdriver.chrome.driver", chromeDriverPath);
@@ -87,29 +87,26 @@ public class AnalystReportCollectScheduler {
 
         } catch (Exception e) {
             e.printStackTrace();
-
         }
     }
 
-    private static String getUrl(String tag) {
+    private static String getUrl(String tag) throws Exception {
         Pattern p = Pattern.compile("href=\"(.*?)\"");
         Matcher m = p.matcher(tag);
         String url = "";
         if (m.find()) {
-            url = m.group(1); // this variable should contain the link URL
+            url = m.group(1);
         }
 
         return url;
     }
 
-    private static String getCode(String title) {
-        String regex = "\\([0-9]{6}\\)";
-        Pattern p = Pattern.compile(regex);
+    private static String getCode(String title) throws Exception {
+        Pattern p = Pattern.compile("\\([0-9]{6}\\)");
         Matcher m = p.matcher(title);
-
         String code = "";
-        while (m.matches()) {
-            code = m.group();
+        if (m.find()) {
+            code = m.group().replace("(", "").replace(")", "");
         }
 
         return code;
