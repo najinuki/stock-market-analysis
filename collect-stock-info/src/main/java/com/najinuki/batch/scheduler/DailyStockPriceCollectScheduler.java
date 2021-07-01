@@ -26,11 +26,14 @@ public class DailyStockPriceCollectScheduler {
 
     private static Logger logger = LoggerFactory.getLogger(DailyStockPriceCollectScheduler.class);
 
-    @Autowired
-    StockItemService stockItemService;
+    private final StockItemService stockItemService;
 
     @Value("${chrome.driver.path}")
     private String chromeDriverPath;
+
+    public DailyStockPriceCollectScheduler(StockItemService stockItemService) {
+        this.stockItemService = stockItemService;
+    }
 
     @Scheduled(fixedDelay = 10000)
     public void start() {
@@ -50,7 +53,7 @@ public class DailyStockPriceCollectScheduler {
                 driver.get(url);
                 driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 
-                List<WebElement> elementList = driver.findElement(By.id("boxDayHistory")).findElements(By.cssSelector("div.box_contents > div > table > tbody > tr.first"));
+                List<WebElement> elementList = driver.findElement(By.id("boxDayHistory")).findElements(By.cssSelector("div.box_contents > div > table > tbody > tr.first > td"));
                 String date = elementList.get(0).getText(); // 일자
                 String open = elementList.get(1).getText(); // 시가
                 String high = elementList.get(2).getText(); // 고가
@@ -59,6 +62,9 @@ public class DailyStockPriceCollectScheduler {
                 String diff = elementList.get(5).getText(); // 전일비
                 String fluctuations = elementList.get(6).getText(); // 등락률
                 String volume = elementList.get(7).getText(); // 거래량
+
+                System.out.println("################## " + date + ", " + open + ", " + high + ", " + low + ", " + close
+                + ", " + diff + ", " + fluctuations + ", " + volume);
 
                 // Apache Kafka로 전송 로직 추가
 

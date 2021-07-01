@@ -25,14 +25,17 @@ public class AnalystReportCollectScheduler {
 
     private static Logger logger = LoggerFactory.getLogger(AnalystReportCollectScheduler.class);
 
-    @Autowired
-    AnalystReportService analystReportService;
+    private final AnalystReportService analystReportService;
 
     @Value("${chrome.driver.path}")
     private String chromeDriverPath;
 
     @Value("${pdf.download.path}")
     private String pdfDownloadPath;
+
+    public AnalystReportCollectScheduler(AnalystReportService analystReportService) {
+        this.analystReportService = analystReportService;
+    }
 
     //@Scheduled(fixedDelay = 10000)
     public void start() {
