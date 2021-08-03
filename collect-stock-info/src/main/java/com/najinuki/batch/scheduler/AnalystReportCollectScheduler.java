@@ -30,9 +30,6 @@ public class AnalystReportCollectScheduler {
     @Value("${chrome.driver.path}")
     private String chromeDriverPath;
 
-    @Value("${pdf.download.path}")
-    private String pdfDownloadPath;
-
     public AnalystReportCollectScheduler(AnalystReportService analystReportService) {
         this.analystReportService = analystReportService;
     }

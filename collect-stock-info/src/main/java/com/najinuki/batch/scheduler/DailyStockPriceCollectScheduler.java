@@ -35,7 +35,7 @@ public class DailyStockPriceCollectScheduler {
         this.stockItemService = stockItemService;
     }
 
-    @Scheduled(fixedDelay = 10000)
+    //@Scheduled(fixedDelay = 10000)
     public void start() {
         try {
             System.setProperty("webdriver.chrome.driver", chromeDriverPath);
